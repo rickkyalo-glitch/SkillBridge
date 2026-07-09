@@ -24,6 +24,13 @@ export default function App() {
   const [sessions, setSessions] = useState(INITIAL_SESSIONS);
   const nextId = useRef(100);
 
+  const [coinHistory, setCoinHistory] = useState([
+    { id: 1, action: "Joined SkillBridge", change: 10, date: "1d ago" },
+    { id: 2, action: "Completed swap with Jordan Lee", change: 2, date: "10h ago" }
+  ]);
+
+
+
   const [toast, setToast] = useState({ show: false, msg: "", type: "" });
   const toastTimer = useRef(null);
 
@@ -33,8 +40,17 @@ export default function App() {
     toastTimer.current = setTimeout(() => setToast((t) => ({ ...t, show: false })), 2800);
   }
 
-  function updateCoins(delta) {
+  function updateCoins(delta, reason) {
     setMyCoins((c) => c + delta);
+    setCoinHistory((h) => [
+      {
+        id: nextId.current++,
+        action: reason || (delta > 0 ? "Coins earned" : "Coins spent"),
+        change: delta,
+        date: "Just now",
+      },
+      ...h,
+    ]);
   }
 
   function nav(p) { setPage(p); }
@@ -69,16 +85,16 @@ export default function App() {
     const msg = reqMsg.trim();
     if (!msg) { showToast("Please add a message", "error"); return; }
 
+    const offer = exchangeType === "swap" ? reqOfferSel : null;
+    const want = exchangeType === "swap" ? reqWantSel : reqCoinWantSel;
+
     if (exchangeType === "coin") {
       if (myCoins < 3) { showToast("Not enough Skill Coins!", "error"); return; }
-      updateCoins(-3);
+      updateCoins(-3, `Requested skill: ${want} from ${reqModalUser.name}`);
       showToast("3 Skill Coins spent · Request sent ✓", "success");
     } else {
       showToast(`Request sent to ${reqModalUser.name} ✓`, "success");
     }
-
-    const offer = exchangeType === "swap" ? reqOfferSel : null;
-    const want = exchangeType === "swap" ? reqWantSel : reqCoinWantSel;
 
     setRequests((rs) => [...rs, {
       id: nextId.current++, fromId: reqModalUser.id, toId: reqModalUser.id,
@@ -99,7 +115,7 @@ export default function App() {
     }
     if (type === "offer") {
       setMyOffers((o) => [...o, v]);
-      updateCoins(1); // reward for adding something you can teach
+      updateCoins(1, `Added skill: ${v}`); // reward for adding something you can teach
       showToast(`${v} added · +1 Skill Coin ◈`, "success");
     } else {
       setMyWants((w) => [...w, v]);
@@ -120,8 +136,10 @@ export default function App() {
   const [decliningId, setDecliningId] = useState(null);
 
   function acceptReq(id) {
+    const req = requests.find((r) => r.id === id);
+    const partnerName = USERS.find((u) => u.id === (req?.fromId || req?.toId))?.name || "User";
     setRequests((rs) => rs.map((r) => (r.id === id ? { ...r, status: "accepted" } : r)));
-    updateCoins(2);
+    updateCoins(2, `Accepted swap request from ${partnerName}`);
     showToast("Exchange accepted! +2 Skill Coins ◈", "success");
   }
 
@@ -179,7 +197,8 @@ export default function App() {
   function submitReview() {
     if (!reviewStar) { showToast("Please select a rating", "error"); return; }
     setSessions((ss) => ss.map((s) => (s.id === reviewSessionId ? { ...s, reviewed: true } : s)));
-    updateCoins(1);
+    const sess = sessions.find((s) => s.id === reviewSessionId);
+    updateCoins(1, `Reviewed session with ${sess?.with || "partner"}`);
     setReviewModalOpen(false);
     showToast("Review submitted · +1 Skill Coin ◈", "success");
   }
@@ -218,6 +237,7 @@ export default function App() {
       {page === "profile" && (
         <ProfilePage
           myOffers={myOffers} myWants={myWants} myCoins={myCoins} sessionsCount={sessions.length}
+          coinHistory={coinHistory}
           onAddSkill={addSkill} onRemoveSkill={removeSkill} nav={nav}
         />
       )}
