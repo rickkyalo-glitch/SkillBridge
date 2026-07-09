@@ -1,6 +1,26 @@
 import { USERS } from "../../data.js";
 import ModalShell from "./ModalShell.jsx";
 
+/**
+ * SessionModal provides a scheduling interface to book a skill exchange session.
+ * It contains form fields for selecting the partner user, inputting the skill topic,
+ * specifying date and time, and picking a session duration.
+ *
+ * @param {Object} props
+ * @param {boolean} props.open - Indicates whether the booking modal is open.
+ * @param {function} props.onClose - Callback triggered when the modal is cancelled/closed.
+ * @param {string} props.withUser - The selected partner user's name/ID.
+ * @param {function} props.setWithUser - State setter to update the selected partner.
+ * @param {string} props.skill - The subject or topic of the session.
+ * @param {function} props.setSkill - State setter to update the session topic text.
+ * @param {string} props.date - The selected date string (YYYY-MM-DD format).
+ * @param {function} props.setDate - State setter for the date input value.
+ * @param {string} props.time - The selected start time string (HH:MM format).
+ * @param {function} props.setTime - State setter for the time input value.
+ * @param {number} props.dur - Selected session duration in minutes.
+ * @param {function} props.setDur - State setter to update the duration.
+ * @param {function} props.onBook - Callback triggered when confirming the booking.
+ */
 export default function SessionModal({
   open, onClose,
   withUser, setWithUser,
@@ -12,6 +32,7 @@ export default function SessionModal({
 }) {
   return (
     <ModalShell open={open} title="Schedule a session" onClose={onClose}>
+
       <div className="mo-field">
         <label className="mo-label">Session with</label>
         <select className="mo-select" value={withUser} onChange={(e) => setWithUser(e.target.value)}>

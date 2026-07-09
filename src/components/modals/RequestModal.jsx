@@ -1,6 +1,30 @@
 import Avatar from "../Avatar.jsx";
 import ModalShell from "./ModalShell.jsx";
 
+/**
+ * RequestModal allows users to initiate a skill exchange request with another user.
+ * It supports two modes:
+ * 1. "swap" - exchange teaching a skill in return for learning a skill.
+ * 2. "coin" - spend skill coins to learn a skill without offering a skill in return.
+ *
+ * @param {Object} props
+ * @param {boolean} props.open - Whether the modal is open.
+ * @param {Object} props.user - The target user object we are requesting an exchange with.
+ * @param {Array<string>} props.myOffers - List of skills that the current user can offer/teach.
+ * @param {string} props.exchangeType - Active mode ("swap" or "coin").
+ * @param {function} props.setExchangeType - State setter to update the active mode.
+ * @param {string} props.offerSel - The skill current user is offering to teach (swap mode).
+ * @param {function} props.setOfferSel - State setter for the offered skill.
+ * @param {string} props.wantSel - The skill current user wants to learn from target user (swap mode).
+ * @param {function} props.setWantSel - State setter for the wanted skill.
+ * @param {string} props.coinWantSel - The skill current user wants to learn (coin mode).
+ * @param {function} props.setCoinWantSel - State setter for the wanted skill in coin mode.
+ * @param {string} props.msg - Personalized message body text.
+ * @param {function} props.setMsg - State setter for the message text.
+ * @param {number} props.myCoins - The count of skill coins the current user possesses.
+ * @param {function} props.onClose - Callback triggered when the modal is closed/cancelled.
+ * @param {function} props.onSend - Callback triggered when the request is confirmed and sent.
+ */
 export default function RequestModal({
   open, user, myOffers,
   exchangeType, setExchangeType,
@@ -10,10 +34,13 @@ export default function RequestModal({
   msg, setMsg,
   myCoins, onClose, onSend,
 }) {
+  // If the user has no offers defined, guide them to add skills first
   const offerOptions = myOffers.length ? myOffers : ["Add skills to your profile first"];
+  // Retrieve the skills offered by the user we are requesting from
   const theirOptions = user ? user.offers : [];
 
   return (
+
     <ModalShell open={open} title="Request a skill exchange" onClose={onClose}>
       {user && (
         <div className="flex items-center gap-3 p-3.5 bg-[#FAFAFA] border border-[#E5E5E5] rounded-2xl mb-4">
