@@ -1,6 +1,7 @@
-[README.md](https://github.com/user-attachments/files/29680046/README.md)# SkillBridge 
+# SkillBridge 
 
 SkillBridge is a peer-to-peer skill exchange platform built for students. Instead of paying for tutoring or ads-driven marketplaces, students trade what they know for what they want to learn — either through a direct **skill swap** (you teach me UI/UX, I teach you web dev) or by spending **Skill Coins**, an in-app currency earned by teaching, completing sessions, and leaving reviews.
+ We separated each page we wanted among the 4 of us, then we did our parts separately to reduce merge conflicts then we gave the full codebase to Rick, who pushed it to Github.  We then refined the project later.
 
 ## What it does
 
