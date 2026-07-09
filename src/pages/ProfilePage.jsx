@@ -48,7 +48,7 @@ export default function ProfilePage({ myOffers, myWants, myCoins, sessionsCount,
             </div>
 
             <div className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-2xl px-3.5 py-2.5 mb-5">
-              ⇄ Not a CV platform — a community exchange
+              ⇄ Ujuzi wako ni currency yako
             </div>
 
             <button
@@ -128,8 +128,8 @@ function SkillSection({ type, skills, title, dotColor, placeholder, onAdd, onRem
         {skills.length === 0
           ? <span className="text-xs text-[#aaa]">None added yet</span>
           : skills.map((s, i) => (
-              <SkillTag key={s + i} label={s} variant={type} onRemove={() => onRemove(type, i)} />
-            ))}
+            <SkillTag key={s + i} label={s} variant={type} onRemove={() => onRemove(type, i)} />
+          ))}
       </div>
 
       <div className="flex gap-2">
@@ -150,3 +150,4 @@ function SkillSection({ type, skills, title, dotColor, placeholder, onAdd, onRem
     </div>
   );
 }
+
