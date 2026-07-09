@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { SKILL_TAGS } from "../data.js";
 import { calcMatch } from "../utils.js";
 import Avatar from "../components/Avatar.jsx";
@@ -5,6 +6,31 @@ import SkillTag from "../components/SkillTag.jsx";
 import MatchBar from "../components/MatchBar.jsx";
 
 export default function DiscoverPage({ list, myOffers, myWants, activeTag, setTag, sentSet, onRequest }) {
+  const [onlineOnly, setOnlineOnly] = useState(false);
+  const [mutualOnly, setMutualOnly] = useState(false);
+  const [sortBy, setSortBy] = useState("compat");
+
+  // Apply filters locally to user list
+  let processedList = [...list];
+  if (onlineOnly) {
+    processedList = processedList.filter((u) => u.online);
+  }
+  if (mutualOnly) {
+    processedList = processedList.filter((u) => calcMatch(u, myOffers, myWants) > 40);
+  }
+
+  // Apply sorting options locally
+  processedList.sort((a, b) => {
+    if (sortBy === "rating") {
+      return b.rating - a.rating;
+    } else if (sortBy === "swaps") {
+      return b.swaps - a.swaps;
+    } else {
+      // default: compatibility score
+      return calcMatch(b, myOffers, myWants) - calcMatch(a, myOffers, myWants);
+    }
+  });
+
   return (
     <div id="page-discover" className="page on max-w-5xl mx-auto px-6 py-10">
       <div className="mb-7">
@@ -14,7 +40,7 @@ export default function DiscoverPage({ list, myOffers, myWants, activeTag, setTa
         <p className="text-sm text-[#666]">Trade what you know for what you need.</p>
       </div>
 
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-4">
         {SKILL_TAGS.map((tag) => (
           <button
             key={tag}
@@ -30,7 +56,44 @@ export default function DiscoverPage({ list, myOffers, myWants, activeTag, setTa
         ))}
       </div>
 
-      {list.length === 0 ? (
+      {/* Advanced sorting & status filtering controls bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 bg-[#FAFAFA] border border-[#E5E5E5] p-3 rounded-2xl">
+        <div className="flex items-center gap-4 flex-wrap">
+          <span className="text-[10px] text-[#888] font-semibold uppercase tracking-wider">Filter status:</span>
+          <label className="flex items-center gap-2 text-xs font-semibold text-[#444] cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={onlineOnly}
+              onChange={(e) => setOnlineOnly(e.target.checked)}
+              className="rounded border-[#CCC] text-emerald-600 focus:ring-emerald-500 w-3.5 h-3.5 cursor-pointer"
+            />
+            Online Now
+          </label>
+          <label className="flex items-center gap-2 text-xs font-semibold text-[#444] cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={mutualOnly}
+              onChange={(e) => setMutualOnly(e.target.checked)}
+              className="rounded border-[#CCC] text-emerald-600 focus:ring-emerald-500 w-3.5 h-3.5 cursor-pointer"
+            />
+            Mutual Matches
+          </label>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] text-[#888] font-semibold uppercase tracking-wider">Sort by:</span>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="text-xs font-semibold border border-[#E5E5E5] bg-white rounded-xl px-2.5 py-1.5 outline-none focus:border-emerald-400 text-[#444] cursor-pointer"
+          >
+            <option value="compat">Compatibility</option>
+            <option value="rating">Rating</option>
+            <option value="swaps">Swap Activity</option>
+          </select>
+        </div>
+      </div>
+
+      {processedList.length === 0 ? (
         <div className="col-span-full text-center py-20 text-[#999]">
           <div className="text-4xl mb-3">🔍</div>
           <div className="font-semibold text-[#444] mb-1">No results</div>
@@ -38,7 +101,7 @@ export default function DiscoverPage({ list, myOffers, myWants, activeTag, setTa
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {list.map((u, i) => (
+          {processedList.map((u, i) => (
             <UserCard
               key={u.id}
               user={u}

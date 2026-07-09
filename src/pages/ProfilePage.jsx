@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ME } from "../data.js";
 import SkillTag from "../components/SkillTag.jsx";
 
-export default function ProfilePage({ myOffers, myWants, myCoins, sessionsCount, onAddSkill, onRemoveSkill, nav }) {
+export default function ProfilePage({ myOffers, myWants, myCoins, sessionsCount, coinHistory = [], onAddSkill, onRemoveSkill, nav }) {
   return (
     <div id="page-profile" className="page on max-w-5xl mx-auto px-6 py-10">
       <div className="mb-7">
@@ -13,8 +13,8 @@ export default function ProfilePage({ myOffers, myWants, myCoins, sessionsCount,
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-5">
-        <div>
-          <div className="card sticky top-24">
+        <div className="flex flex-col gap-4 sticky top-24 h-fit">
+          <div className="card">
             <div
               className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-semibold mb-4"
               style={{ background: ME.color + "1A", color: ME.color }}
@@ -63,6 +63,31 @@ export default function ProfilePage({ myOffers, myWants, myCoins, sessionsCount,
             >
               View requests
             </button>
+          </div>
+
+          <div className="card">
+            <div className="font-semibold text-xs mb-3.5 font-display flex items-center gap-1.5 text-amber-700 uppercase tracking-wider">
+              <span>◈</span> Coin Activity Log
+            </div>
+            <div className="flex flex-col gap-2.5 max-h-56 overflow-y-auto pr-1">
+              {coinHistory.length === 0 ? (
+                <div className="text-center py-4 text-[#aaa] text-xs">No transactions yet</div>
+              ) : (
+                coinHistory.map((item) => (
+                  <div key={item.id} className="flex justify-between items-center text-xs border-b border-[#F7F7F7] pb-2 last:border-b-0 last:pb-0">
+                    <div className="min-w-0 pr-2">
+                      <div className="font-medium text-[#333] truncate" title={item.action}>
+                        {item.action}
+                      </div>
+                      <div className="text-[10px] text-[#aaa]">{item.date}</div>
+                    </div>
+                    <div className={`font-semibold shrink-0 text-sm ${item.change > 0 ? "text-emerald-600" : "text-amber-600"}`}>
+                      {item.change > 0 ? `+${item.change}` : item.change} ◈
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
 
