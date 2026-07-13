@@ -25,7 +25,7 @@ export default function App() {
   const nextId = useRef(100);
 
   const [coinHistory, setCoinHistory] = useState([
-    { id: 1, action: "Joined SkillBridge", change: 10, date: "1d ago" },
+    { id: 1, action: "Joined SkillBridge", change: 10, date: "1 month ago" },
     { id: 2, action: "Completed swap with Jordan Lee", change: 2, date: "10h ago" }
   ]);
 
