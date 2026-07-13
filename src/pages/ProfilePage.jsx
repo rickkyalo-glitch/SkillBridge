@@ -24,7 +24,7 @@ export default function ProfilePage({ myOffers, myWants, myCoins, sessionsCount,
 
             <div className="font-semibold text-lg mb-0.5 font-display">{ME.name}</div>
             <div className="text-sm text-[#666] mb-1">{ME.dept} · {ME.unit}</div>
-            <div className="text-xs text-[#aaa] mb-5">Member since May 2026</div>
+            <div className="text-xs text-[#aaa] mb-5">Member since June 2026</div>
 
             <div className="grid grid-cols-3 gap-2 mb-4">
               {[
