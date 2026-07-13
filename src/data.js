@@ -38,9 +38,9 @@ export const INITIAL_REQUESTS = [
 ];
 
 export const INITIAL_SESSIONS = [
-  { id: 1, with: "Jessica", skill: "UI/UX Design basics", date: "2026-05-26", time: "14:00", dur: 60, color: "#1FD4A0", reviewed: false },
-  { id: 2, with: "K.Dot", skill: "Music Production intro", date: "2026-05-28", time: "10:30", dur: 45, color: "#F5B731", reviewed: false },
-  { id: 3, with: "Jordan Lee", skill: "Spanish for beginners", date: "2026-05-30", time: "16:00", dur: 60, color: "#8B6BF5", reviewed: false },
+  { id: 1, with: "Jessica", skill: "UI/UX Design basics", date: "2026-06-26", time: "14:00", dur: 60, color: "#1FD4A0", reviewed: false },
+  { id: 2, with: "K.Dot", skill: "Music Production intro", date: "2026-06-28", time: "10:30", dur: 45, color: "#F5B731", reviewed: false },
+  { id: 3, with: "Jordan Lee", skill: "Spanish for beginners", date: "2026-06-30", time: "16:00", dur: 60, color: "#8B6BF5", reviewed: false },
 ];
 
 // Skill category filter pills shown above the Discover grid
