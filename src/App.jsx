@@ -156,7 +156,7 @@ export default function App() {
 
   /* ---------- schedule page ---------- */
   const [calYear, setCalYear] = useState(2026);
-  const [calMonth, setCalMonth] = useState(4); // 0-indexed: 4 = May
+  const [calMonth, setCalMonth] = useState(5); // 0-indexed: 5 = June
   const [selectedDate, setSelectedDate] = useState(null);
 
   function changeMonth(direction) {
