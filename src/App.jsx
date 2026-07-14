@@ -19,7 +19,7 @@ export default function App() {
   const [myOffers, setMyOffers] = useState(["Python", "Flask", "Git"]);
   const [myWants, setMyWants] = useState(["UI Design", "Spanish", "Piano"]);
   const [myCoins, setMyCoins] = useState(12);
-  const [sentSet, setSentSet] = useState(new Set([3]));
+  const [sentSet, setSentSet] = useState(new Set([11]));
   const [requests, setRequests] = useState(INITIAL_REQUESTS);
   const [sessions, setSessions] = useState(INITIAL_SESSIONS);
   const nextId = useRef(100);
